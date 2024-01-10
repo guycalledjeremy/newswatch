@@ -1,26 +1,52 @@
-"""
+"""This is the module that handles user authentification and sends out jwt.
 """
 
-import requests
+import datetime, os
 
+import jwt
+from flask import Flask, request
+
+from .sql_svc import access
+from common import config_utils
+
+# configures Flask server and mysql database
+server = Flask(__name__)
+
+# config
+config = config_utils.load_config("auth/config.yaml")
+# secret config
+secret = config_utils.load_config("auth/secret.yaml")
+
+@server.route("/login", methods=["POST"])
 def login():
-    """Access login function from auth service through POST.
+    """Log registered users in and assigns jwt.
     """
-    basic_auth = ("admin", "Admin123")
-    # basic_auth = ("admin", "Admin12")
-    # basic_auth = ("admi", "Admin123")
+    auth = request.authorization
+    if not auth:
+        return None, ("missing credentials", 401)
 
-    # post auth info to login function from auth service, if successful, response
-    # should contain an encoded jwt.
-    response = requests.post(
-        "http://localhost:3060/lookup/aut",
-        auth=basic_auth
-    )
+    # TODO: pass auth to sql svc and handle the returned response
+    _, err = access.lookup(request, config)
 
-    if response.status_code == 200:
-        return response.text, None
+    if not err:
+        return createJWT(auth.username, secret["JWT_SECRET"], True) # login as admin by default
     else:
-        return None, (response.text, response.status_code)
+        return err
 
+def createJWT(username, secret, authz):
+    """Create and encode a JWT for a registered user as identification
+    """
+    return jwt.encode(
+        {
+            "username": username,
+            # pct = utc - 8hr
+            # exp = iat + 24hr
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=16),
+            "iat": datetime.datetime.utcnow() - datetime.timedelta(hours=8),
+            "admin": authz,
+        },
+        secret,
+        algorithm="HS256",
+    )
 if __name__ == "__main__":
-    print(login())
+    server.run(host="0.0.0.0", port=5000, debug=True)
