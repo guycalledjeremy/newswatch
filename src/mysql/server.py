@@ -11,13 +11,13 @@ server = Flask(__name__)
 mysql = MySQL(server)
 
 # config
-config = config_utils.load_config("config.yaml")
+config = config_utils.load_config("mysql/config.yaml")
 server.config["MYSQL_HOST"] = config['MYSQL_HOST']
 server.config["MYSQL_USER"] = config['MYSQL_USER']
 server.config["MYSQL_DB"] = config['MYSQL_DB']
 server.config["MYSQL_PORT"] = int(config['MYSQL_PORT'])
 # secret config
-secret = config_utils.load_config("secret.yaml")
+secret = config_utils.load_config("mysql/secret.yaml")
 server.config["MYSQL_PASSWORD"] = secret['MYSQL_PASSWORD']
 
 def lookup_auth(auth):
