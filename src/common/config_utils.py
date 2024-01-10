@@ -7,7 +7,7 @@ def load_config(file_path):
     Returns:
         A dictionary with all config data parsed from yaml file.
     """
-    with open(f'mysql/{file_path}', 'r') as yaml_file:
+    with open(file_path, 'r') as yaml_file:
         lines = yaml_file.readlines()
 
     config = {}
