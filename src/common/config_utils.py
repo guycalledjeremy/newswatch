@@ -14,7 +14,7 @@ def load_config(file_path):
 
     for ind, line in enumerate(lines):
         if ind != 0:
-            key, value = map(str.strip, line.split(":"))
+            key, value = map(str.strip, line.split(": "))
             config[key] = value
 
     return config
