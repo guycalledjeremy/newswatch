@@ -1,2 +1,2 @@
 data:
-  SQL_SVC_ADDRESS: 3060
+  SQL_SVC_ADDRESS: localhost:3060
