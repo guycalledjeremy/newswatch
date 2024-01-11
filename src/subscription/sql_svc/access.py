@@ -1,17 +1,27 @@
 import requests
 
-def subscribe():
-    """placeholder for old test code.
-    """
-    data = {
-        'username': 'admin',
-        'keyword': 'apple'
-    }
+def insert(request, config):
+    """Insert a row to subscription table using mysql service through POST.
 
-    # post auth info to login function from auth service, if successful, response
-    # should contain an encoded jwt.
+    Args:
+        request: flask post request.
+        config: dictionary with config information.
+
+    Returns:
+        If request processed successfully, return response and None as a tuple; if request not
+    processed successfully, return None and (error text, error status code) as a tuple.
+    """
+    request_json = request.get_json()
+    if "username" in request_json and "keyword" in request_json:
+        data = {
+            "username": request_json["username"],
+            "keyword": request_json["keyword"]
+        }
+    else:
+        return "bad request: missing keyword", 400
+
     response = requests.post(
-        "http://localhost:3060/insert/subscription",
+        f"http://{config['SQL_SVC_ADDRESS']}/insert/subscription",
         json=data
     )
 
@@ -20,19 +30,28 @@ def subscribe():
     else:
         return None, (response.text, response.status_code)
 
-def delete():
-    """placeholder for old test code.
-    """
-    data = {
-        'username': 'admin',
-        'keyword': 'apple'
-        # 'keyword': 'google'
-    }
+def delete(request, config):
+    """Delete a row to subscription table using mysql service through POST.
 
-    # post auth info to login function from auth service, if successful, response
-    # should contain an encoded jwt.
+    Args:
+        request: flask post request.
+        config: dictionary with config information.
+
+    Returns:
+        If request processed successfully, return response and None as a tuple; if request not
+    processed successfully, return None and (error text, error status code) as a tuple.
+    """
+    request_json = request.get_json()
+    if "username" in request_json and "keyword" in request_json:
+        data = {
+            "username": request_json["username"],
+            "keyword": request_json["keyword"]
+        }
+    else:
+        return "bad request: missing keyword", 400
+
     response = requests.post(
-        "http://localhost:3060/delete/subscription",
+        f"http://{config['SQL_SVC_ADDRESS']}/delete/subscription",
         json=data
     )
 
@@ -40,7 +59,3 @@ def delete():
         return response.text, None
     else:
         return None, (response.text, response.status_code)
-
-if __name__ == "__main__":
-    print(subscribe())
-    print(delete())
