@@ -1,92 +1,30 @@
-import requests
+"""This is the module that acts as gateway for requests from the client and other services.
+"""
 
+from flask import Flask, request
+
+from .auth_svc import access
+from common import config_utils
+
+# configures Flask server and mysql database
+server = Flask(__name__)
+
+# config
+config = config_utils.load_config("gateway/config.yaml")
+
+@server.route("/login", methods=["POST"])
 def login():
-    """placeholder for old test code.
+    """Log registered users in and assigns jwt.
+
+    Returns:
+        A tuple, An encoded jwt/error message and a status code.
     """
-    basic_auth = ("admin", "Admin123")
-    # basic_auth = ("admin", "Admin12")
-    # basic_auth = ("admi", "Admin123")
+    token, err = access.login(request, config)
 
-    # post auth info to login function from auth service, if successful, response
-    # should contain an encoded jwt.
-    response = requests.post(
-        "http://localhost:5000/login",
-        auth=basic_auth
-    )
-
-    if response.status_code == 200:
-        return response.text, None
+    if not err:
+        return token, 200
     else:
-        return None, (response.text, response.status_code)
-
-def validate(jwt):
-    """placeholder for old test code.
-    """
-    headers = {
-        "Authorization": f"Bearer {jwt}",
-        "Content-Type": "application/json",
-    }
-
-    # post auth info to login function from auth service, if successful, response
-    # should contain an encoded jwt.
-    response = requests.post(
-        "http://localhost:5000/validate",
-        headers=headers
-    )
-
-    if response.status_code == 200:
-        return response.text, None
-    else:
-        return None, (response.text, response.status_code)
-
-def subscribe():
-    """placeholder for old test code.
-    """
-    data = {
-        'username': 'admin',
-        'keyword': 'apple'
-    }
-
-    # post auth info to login function from auth service, if successful, response
-    # should contain an encoded jwt.
-    response = requests.post(
-        "http://localhost:8000/subscribe",
-        json=data
-    )
-
-    if response.status_code == 200:
-        return response.text, None
-    else:
-        return None, (response.text, response.status_code)
-
-def unsubscribe():
-    """placeholder for old test code.
-    """
-    data = {
-        'username': 'admin',
-        'keyword': 'apple'
-        # 'keyword': 'google'
-    }
-
-    # post auth info to login function from auth service, if successful, response
-    # should contain an encoded jwt.
-    response = requests.post(
-        "http://localhost:8000/unsubscribe",
-        json=data
-    )
-
-    if response.status_code == 200:
-        return response.text, None
-    else:
-        return None, (response.text, response.status_code)
+        return err
 
 if __name__ == "__main__":
-    ### Tests for auth
-    # jwt, err = login()
-    # print(jwt, err)
-
-    # print(validate(jwt))
-
-    ### Tests for subscription
-    print(subscribe())
-    print(unsubscribe())
+    server.run(host="0.0.0.0", port=8080, debug=True)
