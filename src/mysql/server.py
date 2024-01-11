@@ -61,5 +61,41 @@ def lookup(table):
     else:
         return "invalid lookup table", 404
 
+def insert_subscription(username, keyword):
+    """Helper function to insert row to subscription table.
+
+    Args:
+        username: A string that is the name of the user.
+        keyword: A string that is the keyword to be subscribed.
+
+    Returns:
+        A tuple, a response message and a status code.
+    """
+    cur = mysql.connection.cursor()
+
+    try:
+        cur.execute(
+            "INSERT INTO subscription(username, keyword) VALUES (%s, %s)", (username, keyword)
+        )
+        mysql.connection.commit()
+
+        affected_rows = cur.rowcount
+        if affected_rows > 0:
+            return "successful insert", 200
+        else:
+            return "unsuccessful insert", 500
+    except mysql.connection.Error as err:
+        return err.msg, 500
+
+@server.route("/insert/<table>", methods=["POST"])
+def insert(table):
+    """insert a row to a given table.
+    """
+    if table == "subscription":
+        data = request.get_json()
+        return insert_subscription(data.get('username'), data.get('keyword'))
+    else:
+        return "invalid insert table", 404
+
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=3060, debug=True)
