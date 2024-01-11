@@ -22,17 +22,17 @@ def login():
     """Log registered users in and assigns jwt.
 
     Returns:
-        An encoded jwt or errror message
+        A tuple, An encoded jwt/error message and a status code.
     """
     auth = request.authorization
     if not auth:
         return None, ("missing credentials", 401)
 
-    # TODO: pass auth to sql svc and handle the returned response
+    # try to look up credentials from auth table
     _, err = access.lookup(request, config)
 
     if not err:
-        return createJWT(auth.username, secret["JWT_SECRET"], True) # login as admin by default
+        return createJWT(auth.username, secret["JWT_SECRET"], True), 200 # login as admin by default
     else:
         return err
 
@@ -78,5 +78,6 @@ def createJWT(username, secret, authz):
         secret,
         algorithm="HS256",
     )
+
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=5000, debug=True)
