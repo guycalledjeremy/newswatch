@@ -4,7 +4,7 @@
 import requests
 
 def lookup(request, config):
-    """Access login function from auth service through POST.
+    """Access lookup function from mysql service through POST.
 
     Args:
         request: flask post request.
