@@ -22,7 +22,7 @@ def lookup(request, config):
     # post auth info to login function from auth service, if successful, response
     # should contain an encoded jwt.
     response = requests.post(
-        f"http://localhost:{config['SQL_SVC_ADDRESS']}/lookup/auth", # look up at auth table
+        f"http://{config['SQL_SVC_ADDRESS']}/lookup/auth", # look up at auth table
         auth=basic_auth
     )
 
