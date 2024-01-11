@@ -1,7 +1,7 @@
 """This is the module that handles user authentification and sends out jwt.
 """
 
-import datetime, os
+import datetime
 
 import jwt
 from flask import Flask, request
