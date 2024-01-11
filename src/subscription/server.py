@@ -3,7 +3,7 @@
 
 from flask import Flask, request
 
-from .sql_svc import access
+from .sql_svc import modify
 from common import config_utils
 
 # configures Flask server and mysql database
@@ -19,7 +19,7 @@ def subscribe():
     Returns:
         A tuple, A message and a status code.
     """
-    msg, err = access.insert(request, config)
+    msg, err = modify.insert(request, config)
 
     if not err:
         return msg, 200
@@ -33,7 +33,7 @@ def unsubscribe():
     Returns:
         A tuple, A message and a status code.
     """
-    msg, err = access.delete(request, config)
+    msg, err = modify.delete(request, config)
 
     if not err:
         return msg, 200
