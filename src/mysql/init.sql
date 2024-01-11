@@ -16,10 +16,8 @@ CREATE TABLE user(
 
 CREATE TABLE subscription(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
     username VARCHAR(255),
     keyword VARCHAR(255) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (username) REFERENCES user(username)
 );
 
