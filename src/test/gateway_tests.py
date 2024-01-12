@@ -43,20 +43,24 @@ def subscribe(jwt):
     else:
         return None, (response.text, response.status_code)
 
-def unsubscribe():
+def unsubscribe(jwt):
     """placeholder for old test code.
     """
+    headers = {
+        "Authorization": f"Bearer {jwt}",
+        "Content-Type": "application/json",
+    }
+
     data = {
         'username': 'admin',
         'keyword': 'apple'
         # 'keyword': 'google'
     }
 
-    # post auth info to login function from auth service, if successful, response
-    # should contain an encoded jwt.
     response = requests.post(
         "http://localhost:8080/unsubscribe",
-        json=data
+        json=data,
+        headers=headers
     )
 
     if response.status_code == 200:
@@ -69,8 +73,6 @@ if __name__ == "__main__":
     jwt, err = login()
     print(jwt, err)
 
-    # print(validate(jwt))
-
     ### Tests for subscription
     print(subscribe(jwt))
-    # print(unsubscribe())
+    print(unsubscribe(jwt))
