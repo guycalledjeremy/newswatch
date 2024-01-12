@@ -55,5 +55,31 @@ def subscribe():
         else:
             return err
 
+@server.route("/unsubscribe", methods=["POST"])
+def unsubscribe():
+    """Unsubscribe user to a news keyword.
+
+    Returns:
+        A tuple, A result message and a status code.
+    """
+    access, err = validate.token(request, config)
+
+    if err:
+        return err
+    
+    # access here is the jwt dictionary encoded by the auth service for the user/client
+    access = json.loads(access)
+    if not access["admin"]:
+        return "not authorized", 401
+    elif datetime.datetime.fromtimestamp(access["exp"]) < datetime.datetime.utcnow():
+        return "login expired", 401
+    else:
+        msg, err = update.unsubscribe(request, config)
+
+        if not err:
+            return msg, 200
+        else:
+            return err
+
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=8080, debug=True)
