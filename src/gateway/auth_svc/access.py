@@ -1,10 +1,10 @@
-"""This is the module within auth service that accesses the sql service.
+"""This is the module within gateway service that accesses the auth service to login.
 """
 
 import requests
 
-def lookup(request, config):
-    """Access lookup function from mysql service through POST.
+def login(request, config):
+    """Access login function from auth service through POST.
 
     Args:
         request: flask post request.
@@ -22,7 +22,7 @@ def lookup(request, config):
     # post auth info to login function from auth service, if successful, response
     # should contain an encoded jwt.
     response = requests.post(
-        f"http://{config['SQL_SVC_ADDRESS']}/lookup/auth", # look up at auth table
+        f"http://{config['AUTH_SVC_ADDRESS']}/login", # look up at auth table
         auth=basic_auth
     )
 
