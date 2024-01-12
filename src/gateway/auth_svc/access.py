@@ -1,4 +1,4 @@
-"""This is the module within gateway service that accesses the auth service.
+"""This is the module within gateway service that accesses the auth service to login.
 """
 
 import requests
