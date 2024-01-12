@@ -10,7 +10,7 @@ def login():
     # post auth info to login function from auth service, if successful, response
     # should contain an encoded jwt.
     response = requests.post(
-        "http://localhost:5000/login",
+        "http://localhost:8080/login",
         auth=basic_auth
     )
 
@@ -19,7 +19,7 @@ def login():
     else:
         return None, (response.text, response.status_code)
 
-def validate(jwt):
+def subscribe(jwt):
     """placeholder for old test code.
     """
     headers = {
@@ -27,31 +27,15 @@ def validate(jwt):
         "Content-Type": "application/json",
     }
 
-    # post auth info to login function from auth service, if successful, response
-    # should contain an encoded jwt.
-    response = requests.post(
-        "http://localhost:5000/validate",
-        headers=headers
-    )
-
-    if response.status_code == 200:
-        return response.text, None
-    else:
-        return None, (response.text, response.status_code)
-
-def subscribe():
-    """placeholder for old test code.
-    """
     data = {
         'username': 'admin',
         'keyword': 'apple'
     }
 
-    # post auth info to login function from auth service, if successful, response
-    # should contain an encoded jwt.
     response = requests.post(
-        "http://localhost:8000/subscribe",
-        json=data
+        "http://localhost:8080/subscribe",
+        json=data,
+        headers=headers
     )
 
     if response.status_code == 200:
@@ -71,7 +55,7 @@ def unsubscribe():
     # post auth info to login function from auth service, if successful, response
     # should contain an encoded jwt.
     response = requests.post(
-        "http://localhost:8000/unsubscribe",
+        "http://localhost:8080/unsubscribe",
         json=data
     )
 
@@ -88,5 +72,5 @@ if __name__ == "__main__":
     # print(validate(jwt))
 
     ### Tests for subscription
-    # print(subscribe())
+    print(subscribe(jwt))
     # print(unsubscribe())
