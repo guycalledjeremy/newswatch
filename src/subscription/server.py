@@ -10,7 +10,7 @@ from common import config_utils
 server = Flask(__name__)
 
 # config
-config = config_utils.load_config("auth/config.yaml")
+config = config_utils.load_config("subscription/config.yaml")
 
 @server.route("/subscribe", methods=["POST"])
 def subscribe():
