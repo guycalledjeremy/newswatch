@@ -69,10 +69,9 @@ def createJWT(username, secret, authz):
     return jwt.encode(
         {
             "username": username,
-            # pct = utc - 8hr
             # exp = iat + 24hr
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=16),
-            "iat": datetime.datetime.utcnow() - datetime.timedelta(hours=8),
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=24),
+            "iat": datetime.datetime.utcnow(),
             "admin": authz,
         },
         secret,
