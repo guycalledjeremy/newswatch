@@ -1,4 +1,4 @@
-import requests
+import json, requests
 
 def add_news():
     """
@@ -16,9 +16,9 @@ def add_news():
     )
 
     if response.status_code == 200:
-        return response.text, None
+        return json.loads(response.text), None
     else:
-        return None, (response.text, response.status_code)
+        return None, (json.loads(response.text), response.status_code)
 
 def lookup_news(keyword):
     """
@@ -28,11 +28,31 @@ def lookup_news(keyword):
     )
 
     if response.status_code == 200:
-        return response.text, None
+        return json.loads(response.text), None
     else:
-        return None, (response.text, response.status_code)
+        return None, (json.loads(response.text), response.status_code)
+
+def delete_news(keyword):
+    """
+    """
+    response = requests.post(
+        f"http://localhost:9000/delete/{keyword}"
+    )
+
+    if response.status_code == 200:
+        return json.loads(response.text), None
+    else:
+        return None, (json.loads(response.text), response.status_code)
 
 if __name__ == "__main__":
-    # print(add_news())
+    # test for add
+    print(add_news())
+
+    # tests for lookup
     print(lookup_news('apple'))
     print(lookup_news('google'))
+
+    # tests for delete
+    print(delete_news('apple'))
+    print(delete_news('google'))
+    print(lookup_news('apple'))
