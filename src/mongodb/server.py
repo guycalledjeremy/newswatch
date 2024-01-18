@@ -17,6 +17,23 @@ secret = config_utils.load_config("mongodb/secret.yaml")
 
 mongo = PyMongo(server)
 
+@server.route("/lookup/<keyword>", methods=["POST"])
+def lookup(keyword):
+    """look up all news related to one keyword.
+    """
+    try:
+        collection = mongo.db[keyword]
+        documents = list(collection.find({}))
+        for doc in documents:
+            doc['_id'] = str(doc['_id'])
+
+        if len(documents) != 0:
+            return jsonify({'message': 'successful lookup', 'documents': documents}), 200
+        else:
+            return jsonify({'message': 'keyword not found'}), 404
+    except Exception as err:
+        return jsonify({'message': str(err)}), 500
+
 @server.route("/insert", methods=["POST"])
 def insert():
     """insert a row to a given table.
