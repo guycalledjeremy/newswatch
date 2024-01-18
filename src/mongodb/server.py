@@ -46,5 +46,22 @@ def insert():
     except Exception as err:
         return jsonify({'message': str(err)}), 500
 
+@server.route("/delete/<keyword>", methods=["POST"])
+def delete(keyword):
+    """delete all news related to one keyword.
+    """
+    try:
+        collection = mongo.db[keyword]
+
+        # make sure the collection related to the given keyword is not empty
+        if collection.count_documents({}) == 0:
+            return jsonify({'message': 'keyword not found'}), 404
+
+        collection.drop()
+
+        return jsonify({'message': f'successful delete keyword "{keyword}"'}), 200
+    except Exception as err:
+        return jsonify({'message': str(err)}), 500
+
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=9000, debug=True)
