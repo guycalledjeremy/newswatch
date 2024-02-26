@@ -48,21 +48,24 @@ def get_articles(search_result):
 
     if search_result['totalResults'] > 0:
         for result in search_result['articles']:
-            # extract text from url
-            article = Article(result['url'])
-            article.download()
-            # parse the text from the web page
-            article.parse() 
+            try:
+                # extract text from url
+                article = Article(result['url'])
+                article.download()
+                # parse the text from the web page
+                article.parse() 
 
-            # create news dictioinary
-            news = {}
-            news["authors"] = article.authors
-            if article.publish_date:
-                news["date"] = article.publish_date.strftime("%m/%d/%Y, %H:%M:%S")
-            news["text"] = article.text
-            news["title"] = result['title']
+                # create news dictioinary
+                news = {}
+                news["authors"] = article.authors
+                if article.publish_date:
+                    news["date"] = article.publish_date.strftime("%m/%d/%Y, %H:%M:%S")
+                news["text"] = article.text
+                news["title"] = result['title']
 
-            # store this news to the final list
-            articles.append(news)
+                # store this news to the final list
+                articles.append(news)
+            except Exception as e:
+                print(e)
 
     return articles
