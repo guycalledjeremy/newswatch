@@ -1,6 +1,8 @@
 """This is the module that works with the sql database.
 """
 
+from collections import defaultdict
+
 from flask import Flask, request
 from flask_mysqldb import MySQL
 
@@ -157,6 +159,28 @@ def delete(table):
         return delete_subscription(data.get('username'), data.get('keyword'))
     else:
         return "invalid table to delete", 404
+
+@server.route("/query", methods=["POST"])
+def query():
+    """Query all usernames and all keywords related to each username.
+    """
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT username FROM user")
+        usernames = [row[0] for row in cur.fetchall()]
+
+        res = defaultdict(list)
+        for username in usernames:
+            cur.execute(
+                "SELECT keyword FROM subscription WHERE username = %s", (username,)
+            )
+            keywords = [row[0] for row in cur.fetchall()]
+            for keyword in keywords:
+                res[keyword].append(username)
+
+        return res, 200
+    except mysql.connection.Error as err:
+        return str(err), 500
 
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=3060, debug=True)

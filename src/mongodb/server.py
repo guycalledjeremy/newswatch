@@ -41,8 +41,8 @@ def insert():
     data = request.get_json()
 
     try:
-        res = mongo.db[data["keyword"]].insert_one(data["news"])
-        return jsonify({'message': 'successful insert', 'id': str(res.inserted_id)}), 200
+        mongo.db[data["keyword"]].insert_many(data["news"])
+        return jsonify({'message': 'successful insert'}), 200
     except Exception as err:
         return jsonify({'message': str(err)}), 500
 
