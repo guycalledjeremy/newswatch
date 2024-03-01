@@ -1,16 +1,19 @@
 """This is the module that handles user news subscription.
 """
 
+import os
+
 from flask import Flask, request
 
-from .sql_svc import modify
-from common import config_utils
+from sql_svc import modify
+# from common import config_utils
 
 # configures Flask server and mysql database
 server = Flask(__name__)
 
 # config
-config = config_utils.load_config("subscription/config.yaml")
+config = {"SQL_SVC_ADDRESS": os.environ.get("SQL_SVC_ADDRESS")}
+# config = config_utils.load_config("subscription/config.yaml")
 
 @server.route("/subscribe", methods=["POST"])
 def subscribe():
