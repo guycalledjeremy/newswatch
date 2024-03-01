@@ -10,7 +10,7 @@ def login():
     # post auth info to login function from auth service, if successful, response
     # should contain an encoded jwt.
     response = requests.post(
-        "http://localhost:8080/login",
+        "http://newswatch.com/login",
         auth=basic_auth
     )
 
@@ -33,7 +33,7 @@ def subscribe(jwt):
     }
 
     response = requests.post(
-        "http://localhost:8080/subscribe",
+        "http://newswatch.com/subscribe",
         json=data,
         headers=headers
     )
@@ -58,7 +58,7 @@ def unsubscribe(jwt):
     }
 
     response = requests.post(
-        "http://localhost:8080/unsubscribe",
+        "http://newswatch.com/unsubscribe",
         json=data,
         headers=headers
     )
