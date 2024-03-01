@@ -1,19 +1,24 @@
 """This is the module that acts as gateway for requests from the client and other services.
 """
 
+import os
 import datetime, json
 
 from flask import Flask, request
 
-from .auth_svc import access, validate
-from .sub_svc import update
-from common import config_utils
+from auth_svc import access, validate
+from sub_svc import update
+# from common import config_utils
 
 # configures Flask server and mysql database
 server = Flask(__name__)
 
 # config
-config = config_utils.load_config("gateway/config.yaml")
+config = {
+    "AUTH_SVC_ADDRESS": os.environ.get("AUTH_SVC_ADDRESS"),
+    "SUB_SVC_ADDRESS": os.environ.get("SUB_SVC_ADDRESS")
+}
+# config = config_utils.load_config("gateway/config.yaml")
 
 @server.route("/login", methods=["POST"])
 def login():
