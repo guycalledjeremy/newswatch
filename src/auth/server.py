@@ -1,21 +1,25 @@
 """This is the module that handles user authentification and sends out jwt.
 """
 
+import os
 import datetime
 
 import jwt
 from flask import Flask, request
 
-from .sql_svc import access
-from common import config_utils
+from sql_svc import access
+# from common import config_utils
 
 # configures Flask server and mysql database
 server = Flask(__name__)
 
-# config
-config = config_utils.load_config("auth/config.yaml")
-# secret config
-secret = config_utils.load_config("auth/secret.yaml")
+config = {"SQL_SVC_ADDRESS": os.environ.get("SQL_SVC_ADDRESS")}
+secret = {"JWT_SECRET": os.environ.get("JWT_SECRET")}
+
+# # config
+# config = config_utils.load_config("auth/config.yaml")
+# # secret config
+# secret = config_utils.load_config("auth/secret.yaml")
 
 @server.route("/login", methods=["POST"])
 def login():
@@ -60,7 +64,7 @@ def validate():
 
     return decoded, 200
 
-def createJWT(username, secret, authz):
+def createJWT(username, secret_key, authz):
     """Create and encode a JWT for a registered user as identification..
 
     Returns:
@@ -74,7 +78,7 @@ def createJWT(username, secret, authz):
             "iat": datetime.datetime.utcnow(),
             "admin": authz,
         },
-        secret,
+        secret_key,
         algorithm="HS256",
     )
 
