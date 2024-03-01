@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-configmap
+data:
+  MYSQL_HOST: host.minikube.internal
+  MYSQL_USER: nw_user
+  MYSQL_DB: newswatch 
+  MYSQL_PORT: "3306"
