@@ -2,25 +2,32 @@
 """
 
 from collections import defaultdict
+import os
 
 from flask import Flask, request
 from flask_mysqldb import MySQL
 
-from common import config_utils
+# from common import config_utils
 
 # configures Flask server and mysql database
 server = Flask(__name__)
 mysql = MySQL(server)
 
 # config
-config = config_utils.load_config("mysql/config.yaml")
-server.config["MYSQL_HOST"] = config['MYSQL_HOST']
-server.config["MYSQL_USER"] = config['MYSQL_USER']
-server.config["MYSQL_DB"] = config['MYSQL_DB']
-server.config["MYSQL_PORT"] = int(config['MYSQL_PORT'])
+server.config["MYSQL_HOST"] = os.environ.get("MYSQL_HOST")
+server.config["MYSQL_USER"] = os.environ.get("MYSQL_USER")
+server.config["MYSQL_DB"] = os.environ.get("MYSQL_DB")
+server.config["MYSQL_PORT"] = int(os.environ.get("MYSQL_PORT"))
+# config = config_utils.load_config("mysql/config.yaml")
+# server.config["MYSQL_HOST"] = config['MYSQL_HOST']
+# server.config["MYSQL_USER"] = config['MYSQL_USER']
+# server.config["MYSQL_DB"] = config['MYSQL_DB']
+# server.config["MYSQL_PORT"] = int(config['MYSQL_PORT'])
+
 # secret config
-secret = config_utils.load_config("mysql/secret.yaml")
-server.config["MYSQL_PASSWORD"] = secret['MYSQL_PASSWORD']
+server.config["MYSQL_PASSWORD"] = os.environ.get("MYSQL_PASSWORD")
+# secret = config_utils.load_config("mysql/secret.yaml")
+# server.config["MYSQL_PASSWORD"] = secret['MYSQL_PASSWORD']
 
 def lookup_auth(auth):
     """Helper function to look up auth table.
