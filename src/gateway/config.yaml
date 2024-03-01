@@ -1,3 +1,0 @@
-data:
-  AUTH_SVC_ADDRESS: localhost:5000
-  SUB_SVC_ADDRESS: localhost:8000
