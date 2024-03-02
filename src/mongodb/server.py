@@ -4,17 +4,13 @@
 from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
 
-from common import config_utils
-
 # configures Flask server and mysql database
 server = Flask(__name__)
 
 # config
 server.config["MONGO_URI"] = "mongodb://localhost:27017/news"
-config = config_utils.load_config("mongodb/config.yaml")
-# secret config
-secret = config_utils.load_config("mongodb/secret.yaml")
 
+# Initiates pymongodb client
 mongo = PyMongo(server)
 
 @server.route("/lookup/<keyword>", methods=["POST"])
