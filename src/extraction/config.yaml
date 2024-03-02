@@ -1,3 +1,0 @@
-data:
-  SQL_SVC_ADDRESS: localhost:3060
-  MONGO_SVC_ADDRESS: localhost:9000
