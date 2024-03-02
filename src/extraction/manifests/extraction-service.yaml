@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: extraction
+spec:
+  selector:
+    app: extraction
+  ports:
+    - name: http 
+      protocol: TCP
+      port: 9050
+      targetPort: 9050
+  type: ClusterIP

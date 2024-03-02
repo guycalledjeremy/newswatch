@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: extraction-configmap
+data:
+  SQL_SVC_ADDRESS: mysql:3060
+  MONGO_SVC_ADDRESS: mongodb:9000
+  NLP_METHOD: gpt
+  SEARCH_CATEGORY: business
+  SEARCH_COUNTRY: us
