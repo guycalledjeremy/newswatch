@@ -2,15 +2,11 @@
 """
 
 import ast
+import os
 
 from openai import OpenAI
 
-from common import config_utils
-from model import NLPModel
-
-# secret config
-secret = config_utils.load_config("core_nlp/secret.yaml")
-
+from core_nlp.model import NLPModel
 class GPTModel(NLPModel):
     """The gpt-based model utilizes conversational ai's pre-traiend LLM to extract events from news.
     """
@@ -22,7 +18,7 @@ class GPTModel(NLPModel):
             model_name: The name of the GPT model to be used, 'gpt-4-turbo-preview' by default. Alternative: 'gpt-3.5-turbo'.
         """
         self.client = OpenAI(
-            api_key=secret["OPENAI_API_KEY"]
+            api_key=os.environ.get("OPENAI_API_KEY")
         )
         self.model_name = model_name
 

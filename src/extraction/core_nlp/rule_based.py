@@ -3,7 +3,7 @@
 
 import spacy
 
-from model import NLPModel
+from core_nlp.model import NLPModel
 
 class RuleBasedModel(NLPModel):
     """The rule based model parse predicates as events based on linguistic rules.
