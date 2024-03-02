@@ -11,7 +11,7 @@ def add_news():
     }
 
     response = requests.post(
-        "http://localhost:9000/insert",
+        "http://newswatch.com/insert",
         json=data
     )
 
@@ -24,7 +24,7 @@ def lookup_news(keyword):
     """
     """
     response = requests.post(
-        f"http://localhost:9000/lookup/{keyword}"
+        f"http://newswatch.com/lookup/{keyword}"
     )
 
     if response.status_code == 200:
@@ -36,7 +36,7 @@ def delete_news(keyword):
     """
     """
     response = requests.post(
-        f"http://localhost:9000/delete/{keyword}"
+        f"http://newswatch.com/delete/{keyword}"
     )
 
     if response.status_code == 200:
